@@ -1,0 +1,52 @@
+{
+  "compilerOptions": {
+    "allowJs": false,
+    "allowSyntheticDefaultImports": true,
+    "alwaysStrict": true,
+    "baseUrl": ".",
+    "emitDecoratorMetadata": true,
+    "esModuleInterop": false,
+    "experimentalDecorators": true,
+    "inlineSourceMap": true,
+    "isolatedModules": false,
+    "jsx": "react-jsx",
+    "lib": [
+      "DOM",
+      "DOM.Iterable",
+      "ESNext"
+    ],
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "outDir": "dist/build",
+    "paths": {
+      "src/*": [
+        "./src/*"
+      ],
+      "package.json": [
+        "./package.json"
+      ],
+      "manifest.json": [
+        "./manifest.json"
+      ],
+      "README.md": [
+        "./README.md"
+      ]
+    },
+    "resolveJsonModule": true,
+    "skipDefaultLibCheck": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "strictPropertyInitialization": false,
+    "strictBindCallApply": true,
+    "strictNullChecks": true,
+    "target": "ES5",
+    "typeRoots": [
+      "./node_modules/@types/"
+    ]
+  },
+  "include": [
+    "manifest.json",
+    "src/",
+    "package.json"
+  ]
+}

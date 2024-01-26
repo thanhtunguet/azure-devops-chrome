@@ -1,0 +1,93 @@
+{
+  "name": "parcel-react-template",
+  "version": "0.0.1",
+  "description": "Parcel React Template",
+  "scripts": {
+    "merge": "react3l translate merge -i src/ -o src/locales/ -p src/locales/",
+    "extract": "react3l translate extract -i src/ -o src/locales/ -p src/locales/",
+    "watch-chrome": "rm -rf dist .parcel-cache && NODE_ENV=development parcel watch manifest.json",
+    "build-chrome": "rm -rf dist .parcel-cache && NODE_ENV=production  parcel build manifest.json --no-source-maps",
+    "watch": "rm -rf dist .parcel-cache && cross-env NODE_ENV=development parcel src/index.html",
+    "build": "rm -rf dist .parcel-cache && cross-env NODE_ENV=production  parcel build src/index.html --no-source-maps",
+    "zip": "zip -r extension.zip dist",
+    "release": "run-s build zip"
+  },
+  "alias": {
+    "manifest.json": "./manifest.json",
+    "package.json": "./package.json",
+    "readme.mdx": "./README.md",
+    "src": "./src"
+  },
+  "repository": "https://github.com/thanhtunguet/parcel-react-template",
+  "author": {
+    "name": "thanhtunguet",
+    "email": "thanhtung.uet@gmail.com",
+    "url": "https://github.com/thanhtunguet"
+  },
+  "maintainers": [
+    {
+      "name": "thanhtunguet",
+      "email": "thanhtung.uet@gmail.com",
+      "url": "https://github.com/thanhtunguet"
+    }
+  ],
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "@mdx-js/react": "^1",
+    "@redux-devtools/extension": "^3.2.5",
+    "@reduxjs/toolkit": "^2.0.1",
+    "@sentry/react": "^7.92.0",
+    "@swc/helpers": "^0.4.12",
+    "antd": "^5.12.7",
+    "axios": "~0.21",
+    "bootstrap": "^4",
+    "classnames": "^2.5.0",
+    "dayjs": "^1.11.10",
+    "firebase": "^9.20.0",
+    "history": "^5.3.0",
+    "i18next": "^23.7.11",
+    "lodash": "^4.17.21",
+    "moment": "^2.30.1",
+    "process": "^0.11.10",
+    "react": "^18.2.0",
+    "react-ace": "^10.1.0",
+    "react-dom": "^18.2.0",
+    "react-i18next": "^14.0.0",
+    "react-markdown": "^9.0.0",
+    "react-redux": "^9.0.4",
+    "react-router-dom": "^6.20.0",
+    "react3l": "^7.0.0-rc4",
+    "reactstrap": "^9.2.0",
+    "redux": "^5.0.1",
+    "redux-logger": "^3.0.6",
+    "redux-persist": "^6.0.0",
+    "reflect-metadata": "^0.2.1",
+    "rxjs": "^7.8.1",
+    "slugify": "^1.6.6",
+    "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "@parcel/config-webextension": "^2.10.3",
+    "@parcel/transformer-mdx": "^2.10.3",
+    "@parcel/transformer-sass": "^2.10.3",
+    "@react-native-community/eslint-config": "^3.2.0",
+    "@types/chrome": "^0.0.233",
+    "@types/jest": "^29.5.1",
+    "@types/lodash": "^4.14.202",
+    "@types/react": "^18.0.37",
+    "@types/react-dom": "^18.0.11",
+    "@types/redux-logger": "^3.0.11",
+    "@typescript-eslint/eslint-plugin": "^5.59.1",
+    "@typescript-eslint/parser": "^5.59.1",
+    "cross-env": "^7.0.3",
+    "eslint": "^8.39.0",
+    "eslint-config-prettier": "^8.8.0",
+    "jest": "^29.5.0",
+    "npm-run-all": "^4.1.5",
+    "parcel": "^2.8.3",
+    "prettier": "^2.8.8",
+    "react3l-cli": "^1.1.2",
+    "typescript": "^5.0.4"
+  }
+}
