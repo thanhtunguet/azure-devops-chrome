@@ -16,6 +16,11 @@
         "storage",
         "tabs"
     ],
+    "host_permissions": [
+        "https://dev.azure.com/*",
+        "https://wegen-devops.supa.vn:8443/*",
+        "https://devops.supa.vn:7443/*"
+    ],
     "background": {
         "service_worker": "./src/index.background.ts",
         "type": "module"

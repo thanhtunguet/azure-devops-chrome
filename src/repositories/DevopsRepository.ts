@@ -6,7 +6,7 @@ import {Project} from 'src/models/Project';
 export class DevopsRepository {
   private readonly http: AxiosInstance;
 
-  private static readonly API_VERSION = '7.0';
+  private static readonly API_VERSION = '6.0-preview';
 
   public readonly withApiVersion = (url: string): string => {
     const urlObject = new URL(url);
@@ -15,8 +15,8 @@ export class DevopsRepository {
   };
 
   constructor(
-    private readonly serverUrl: string,
-    private readonly collectionId: string,
+    public readonly serverUrl: string,
+    public readonly collectionId: string,
   ) {
     this.http = axios.create({
       baseURL: `${serverUrl}/${collectionId}`,

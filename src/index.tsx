@@ -9,25 +9,22 @@ import {HomePage} from './pages/HomePage';
 const div = document.getElementById('root')!;
 const root = createRoot(div);
 
-const router = createHashRouter(
-  [
-    {
-      path: AppRoute.HOME,
-      element: <App />,
-      children: [
-        {
-          path: AppRoute.HOME,
-          element: <HomePage />,
-        },
-        {
-          path: AppRoute.DEVOPS_PIPELINES,
-          element: <DevopsProjectForm />,
-        },
-      ],
-    },
-  ],
-  {},
-);
+const router = createHashRouter([
+  {
+    path: AppRoute.HOME,
+    element: <App />,
+    children: [
+      {
+        path: AppRoute.HOME,
+        element: <HomePage />,
+      },
+      {
+        path: AppRoute.DEVOPS_PIPELINES,
+        element: <DevopsProjectForm />,
+      },
+    ],
+  },
+]);
 
 root.render(
   <React.StrictMode>

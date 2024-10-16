@@ -1,6 +1,6 @@
 import {Button, Checkbox, Col, Form, message, Row, Select, Table} from 'antd';
 import React, {useState} from 'react';
-import {useActiveDevopsUrl} from 'src/hooks/use-active-devops-url';
+import {ExtensionMessages} from 'src/config/extension-messages';
 import type {Pipeline} from 'src/models/Pipeline';
 import type {Project} from 'src/models/Project';
 import {ServerUrl} from 'src/models/ServerUrl';
@@ -14,11 +14,9 @@ const ProjectSelectForm = () => {
   const [isProjectLoading, setIsProjectLoading] = useState(true);
   const [selectedProject, setSelectedProject] = useState<Project | undefined>();
 
-  const [activeDevopsUrl, repository] = useActiveDevopsUrl(selectedTab);
-
   React.useEffect(() => {
     chrome.runtime.sendMessage(
-      {action: 'getAllTabs'},
+      {action: ExtensionMessages.GET_ALL_TABS},
       (response: {tabs: chrome.tabs.Tab[]}) => {
         if (response && response.tabs) {
           const urls = response.tabs
@@ -58,17 +56,14 @@ const ProjectSelectForm = () => {
 
   React.useEffect(() => {
     setIsProjectLoading(true);
-    repository
-      ?.getProjects()
-      .then((list) => {
-        setProjects(list ?? []);
+    chrome.runtime.sendMessage(
+      {action: ExtensionMessages.GET_ALL_PROJECTS, server: selectedTab},
+      (response: {projects: Project[]}) => {
+        setProjects(response.projects);
         setIsProjectLoading(false);
-      })
-      .catch((_) => {
-        message.error('Failed to fetch projects.');
-        setIsProjectLoading(false);
-      });
-  }, [activeDevopsUrl, repository]);
+      },
+    );
+  }, [selectedTab]);
 
   const [pipelines, setPipelines] = React.useState<Pipeline[]>([]);
   const [filteredPipelines, setFilteredPipelines] = useState<Pipeline[]>([]);
@@ -82,19 +77,20 @@ const ProjectSelectForm = () => {
       }
       setSelectedProject(project);
       setIsPipelineLoading(true);
-      repository
-        ?.getPipelines(project)
-        .then((list) => {
-          setPipelines(list ?? []);
-          setFilteredPipelines(list ?? []);
+      chrome.runtime.sendMessage(
+        {
+          action: ExtensionMessages.GET_ALL_PIPELINES,
+          project,
+          server: selectedTab,
+        },
+        (response: {pipelines: Pipeline[]}) => {
+          setPipelines(response.pipelines ?? []);
+          setFilteredPipelines(response.pipelines ?? []);
           setIsPipelineLoading(false);
-        })
-        .catch((_) => {
-          message.error('Failed to fetch pipelines.');
-          setIsPipelineLoading(false);
-        });
+        },
+      );
     },
-    [projects, repository],
+    [projects, selectedTab],
   );
 
   const handlePipelineSearch = React.useCallback(
@@ -114,10 +110,26 @@ const ProjectSelectForm = () => {
   const handleSubmit = React.useCallback(async () => {
     setIsTriggering(true);
     for (const pipelineId of selectedPipelines) {
-      await repository?.triggerPipeline(selectedProject!, pipelineId);
+      await new Promise((resolve, reject) => {
+        chrome.runtime.sendMessage(
+          {
+            action: ExtensionMessages.TRIGGER_PIPELINE,
+            project: selectedProject,
+            pipelineId,
+            server: selectedTab,
+          },
+          (response: {success: boolean}) => {
+            if (response.success) {
+              resolve('Pipeline triggered successfully.');
+              return;
+            }
+            reject('Failed to trigger pipeline.');
+          },
+        );
+      });
     }
     setIsTriggering(false);
-  }, [selectedPipelines, selectedProject, repository]);
+  }, [selectedPipelines, selectedProject, selectedTab]);
 
   return (
     <Form layout="vertical">

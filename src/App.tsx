@@ -1,11 +1,10 @@
 import {Layout, Menu} from 'antd';
-import React from 'react';
 import {Outlet, useLocation, useNavigate} from 'react-router-dom';
 import {menu} from './config/menu';
 
 const {Header, Content, Footer} = Layout;
 
-const App: React.FC = () => {
+const App = () => {
   const navigate = useNavigate();
   const {pathname} = useLocation();
 
