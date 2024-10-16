@@ -1,6 +1,6 @@
 {
   "name": "azure-devops-chrome",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "description": "Azure Devops tools for Chrome (for any Azure Devops Server)",
   "scripts": {
     "merge": "react3l translate merge -i src/ -o src/locales/ -p src/locales/",

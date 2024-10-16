@@ -1,6 +1,6 @@
 {
     "name": "Azure Devops Tools",
-    "version": "1.0.0",
+    "version": "1.0.3",
     "description": "Tools for Azure Devops Server",
     "manifest_version": 3,
     "icons": {
