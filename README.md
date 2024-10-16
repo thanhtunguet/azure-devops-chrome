@@ -7,6 +7,8 @@ This Chrome extension allows users to interact with Azure DevOps pipelines direc
 - Search and select multiple pipelines.
 - Trigger multiple pipelines simultaneously.
 
+![image](./assets/screenshot-pipeline-form.png)
+
 ## Features
 
 1. **Open Options Page**: Click the extension icon to open the options page.
