@@ -1,0 +1,13 @@
+@import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
+
+.ant-layout {
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    height: 100vh;
+
+    .ant-layout-content {
+        flex: 1;
+        flex-grow: 1;
+    }
+}

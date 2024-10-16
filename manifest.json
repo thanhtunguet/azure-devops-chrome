@@ -1,0 +1,28 @@
+{
+    "name": "Azure Devops Tools",
+    "version": "1.0.0",
+    "description": "Tools for Azure Devops Server",
+    "manifest_version": 3,
+    "icons": {
+        "16": "assets/images/16.png",
+        "32": "assets/images/32.png",
+        "48": "assets/images/48.png",
+        "64": "assets/images/64.png",
+        "128": "assets/images/128.png"
+    },
+    "permissions": [
+        "activeTab",
+        "cookies",
+        "storage",
+        "tabs"
+    ],
+    "background": {
+        "service_worker": "./src/index.background.ts",
+        "type": "module"
+    },
+    "options_ui": {
+        "page": "./src/index.html",
+        "open_in_tab": true
+    },
+    "action": {}
+}

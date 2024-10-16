@@ -1,14 +1,36 @@
-import * as Sentry from '@sentry/react';
+import React from 'react';
 import {createRoot} from 'react-dom/client';
-import {SENTRY_DSN} from './config/dotenv';
-
-if (SENTRY_DSN) {
-  Sentry.init({
-    dsn: SENTRY_DSN,
-  });
-}
+import {createHashRouter, RouterProvider} from 'react-router-dom';
+import App from './App';
+import {AppRoute} from './config/app-route';
+import DevopsProjectForm from './pages/DevopsPipelinePage';
+import {HomePage} from './pages/HomePage';
 
 const div = document.getElementById('root')!;
 const root = createRoot(div);
 
-root.render(<></>);
+const router = createHashRouter(
+  [
+    {
+      path: AppRoute.HOME,
+      element: <App />,
+      children: [
+        {
+          path: AppRoute.HOME,
+          element: <HomePage />,
+        },
+        {
+          path: AppRoute.DEVOPS_PIPELINES,
+          element: <DevopsProjectForm />,
+        },
+      ],
+    },
+  ],
+  {},
+);
+
+root.render(
+  <React.StrictMode>
+    <RouterProvider router={router} />
+  </React.StrictMode>,
+);
