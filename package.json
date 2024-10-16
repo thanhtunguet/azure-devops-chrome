@@ -1,6 +1,6 @@
 {
   "name": "parcel-react-template",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Parcel React Template",
   "scripts": {
     "merge": "react3l translate merge -i src/ -o src/locales/ -p src/locales/",
