@@ -1,6 +1,6 @@
 {
     "name": "Azure Devops Tools",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "description": "Tools for Azure Devops Server",
     "manifest_version": 3,
     "icons": {
@@ -11,15 +11,13 @@
         "128": "assets/images/128.png"
     },
     "permissions": [
-        "activeTab",
         "cookies",
-        "storage",
         "tabs"
     ],
     "host_permissions": [
-        "https://dev.azure.com/*",
-        "https://wegen-devops.supa.vn:8443/*",
-        "https://devops.supa.vn:7443/*"
+        "https://devops.supa.vn:7443/*",
+        "https://*.visualstudio.com/*",
+        "https://*.dev.azure.com/*"
     ],
     "background": {
         "service_worker": "./src/index.background.ts",
