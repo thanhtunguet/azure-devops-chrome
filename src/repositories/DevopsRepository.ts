@@ -50,7 +50,12 @@ export class DevopsRepository {
     );
     return response.data.value.map(
       (pipeline: any) =>
-        new Pipeline(pipeline.id, pipeline.name, pipeline.description),
+        new Pipeline(
+          pipeline.id,
+          pipeline.name,
+          pipeline.description,
+          pipeline.folder,
+        ),
     );
   };
 

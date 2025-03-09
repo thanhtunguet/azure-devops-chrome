@@ -5,9 +5,12 @@ export class Pipeline {
 
   url: string; // The URL to the pipeline on the Azure DevOps server
 
-  constructor(id: number, name: string, url: string) {
+  folder: string;
+
+  constructor(id: number, name: string, url: string, folder: string) {
     this.id = id;
     this.name = name;
     this.url = url;
+    this.folder = folder;
   }
 }

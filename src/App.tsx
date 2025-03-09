@@ -26,9 +26,6 @@ const App = () => {
       <Content className="m-2 flex-grow-1">
         <Outlet />
       </Content>
-      <Footer className="text-center">
-        Ant Design ©{new Date().getFullYear()} Created by Ant UED
-      </Footer>
     </Layout>
   );
 };

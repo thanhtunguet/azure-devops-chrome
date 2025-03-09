@@ -5,7 +5,7 @@
     "alwaysStrict": true,
     "baseUrl": ".",
     "emitDecoratorMetadata": true,
-    "esModuleInterop": false,
+    "esModuleInterop": true,
     "experimentalDecorators": true,
     "inlineSourceMap": true,
     "isolatedModules": false,
@@ -47,6 +47,7 @@
   "include": [
     "manifest.json",
     "src/",
-    "package.json"
+    "package.json",
+    "markdown.d.ts"
   ]
 }

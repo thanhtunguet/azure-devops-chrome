@@ -59,7 +59,9 @@ const ProjectSelectForm = () => {
     chrome.runtime.sendMessage(
       {action: ExtensionMessages.GET_ALL_PROJECTS, server: selectedTab},
       (response: {projects: Project[]}) => {
-        setProjects(response.projects);
+        setProjects(
+          response.projects.sort((a, b) => a.name.localeCompare(b.name)),
+        );
         setIsProjectLoading(false);
       },
     );
@@ -131,128 +133,185 @@ const ProjectSelectForm = () => {
     setIsTriggering(false);
   }, [selectedPipelines, selectedProject, selectedTab]);
 
-  return (
-    <Form layout="vertical">
-      <Row gutter={12}>
-        <Col span={6}>
-          <Form.Item label="Server">
-            <Select
-              placeholder="Select an Azure DevOps Server"
-              onChange={(value) => {
-                const tab = tabs.find((t) => t.fullUrl === value);
-                if (tab) {
-                  setSelectedTab(tab);
-                }
-              }}
-              showSearch={true}
-              filterOption={(input, option) =>
-                (option?.label as string | undefined)
-                  ?.toLowerCase()
-                  .startsWith(input.toLowerCase()) ?? false
-              }
-              value={selectedTab?.fullUrl}
-              options={tabs.map((tab) => ({
-                value: tab.fullUrl,
-                label: tab.fullUrl,
-              }))}
-            />
-          </Form.Item>
-        </Col>
-        <Col span={6}>
-          <Form.Item label="Project">
-            <Select
-              disabled={!selectedTab}
-              loading={selectedTab ? isProjectLoading : false}
-              placeholder="Select an Azure DevOps Server"
-              onChange={handleProjectChange}
-              showSearch={true}
-              filterOption={(input, option) =>
-                (option?.label as string | undefined)
-                  ?.toLowerCase()
-                  .startsWith(input.toLowerCase()) ?? false
-              }
-              value={selectedProject?.id}
-              options={projects.map((project) => ({
-                value: project.id,
-                label: project.name,
-              }))}
-            />
-          </Form.Item>
-        </Col>
-        <Col span={6}>
-          <Form.Item label="Search Pipelines">
-            <PipelineSearch
-              onChange={handlePipelineSearch}
-              disabled={!selectedProject}
-            />
-          </Form.Item>
-        </Col>
-        <Col span={6}>
-          <Form.Item label="Actions">
-            <Button
-              loading={isTriggering}
-              type="primary"
-              onClick={handleSubmit}
-              disabled={!selectedProject || !selectedPipelines.length}>
-              Trigger selected pipelines
-            </Button>
-          </Form.Item>
-        </Col>
-      </Row>
+  const height = window.innerHeight - 64 - 8 * 2 - 86 - 55;
 
-      <Table
-        rowKey="id"
-        dataSource={filteredPipelines}
-        pagination={false}
-        columns={[
-          {
-            title: (
-              <Checkbox
-                checked={
-                  selectedPipelines.length === filteredPipelines.length &&
-                  filteredPipelines.length > 0
-                }
-                indeterminate={
-                  selectedPipelines.length > 0 &&
-                  selectedPipelines.length < filteredPipelines.length
-                }
-                onChange={(e) => {
-                  setSelectedPipelines(
-                    (e.target.checked ? [...filteredPipelines] : []).map(
-                      (p) => p.id,
-                    ),
-                  );
+  const firstColumnTitle = (
+    <Checkbox
+      checked={
+        selectedPipelines.length === filteredPipelines.length &&
+        filteredPipelines.length > 0
+      }
+      indeterminate={
+        selectedPipelines.length > 0 &&
+        selectedPipelines.length < filteredPipelines.length
+      }
+      onChange={(e) => {
+        setSelectedPipelines(
+          (e.target.checked ? [...filteredPipelines] : []).map((p) => p.id),
+        );
+      }}
+    />
+  );
+
+  return (
+    <>
+      <Form layout="vertical">
+        <Row gutter={12}>
+          <Col span={6}>
+            <Form.Item label="Server">
+              <Select
+                placeholder="Select an Azure DevOps Server"
+                onChange={(value) => {
+                  const tab = tabs.find((t) => t.fullUrl === value);
+                  if (tab) {
+                    setSelectedTab(tab);
+                  }
                 }}
+                showSearch={true}
+                filterOption={(input, option) =>
+                  (option?.label as string | undefined)
+                    ?.toLowerCase()
+                    .startsWith(input.toLowerCase()) ?? false
+                }
+                value={selectedTab?.fullUrl}
+                options={tabs.map((tab) => ({
+                  value: tab.fullUrl,
+                  label: tab.fullUrl,
+                }))}
               />
-            ),
-            dataIndex: 'id',
-            key: 'id',
-            render: (id: number) => (
-              <Checkbox
-                checked={selectedPipelines.includes(id)}
-                onChange={(e) => {
-                  setSelectedPipelines(
-                    e.target.checked
-                      ? [id, ...selectedPipelines]
-                      : selectedPipelines.filter((i) => i !== id),
-                  );
-                }}
+            </Form.Item>
+          </Col>
+          <Col span={6}>
+            <Form.Item label="Project">
+              <Select
+                disabled={!selectedTab}
+                loading={selectedTab ? isProjectLoading : false}
+                placeholder="Select an Azure DevOps Server"
+                onChange={handleProjectChange}
+                showSearch={true}
+                filterOption={(input, option) =>
+                  (option?.label as string | undefined)
+                    ?.toLowerCase()
+                    .startsWith(input.toLowerCase()) ?? false
+                }
+                value={selectedProject?.id}
+                options={projects.map((project) => ({
+                  value: project.id,
+                  label: project.name,
+                }))}
               />
-            ),
-          },
-          {
-            title: 'Name',
-            dataIndex: 'name',
-            key: 'name',
-          },
-          {
-            title: 'Description',
-            dataIndex: 'description',
-            key: 'description',
-          },
-        ]}
-      />
-    </Form>
+            </Form.Item>
+          </Col>
+          <Col span={6}>
+            <Form.Item label="Search Pipelines">
+              <PipelineSearch
+                onChange={handlePipelineSearch}
+                disabled={!selectedProject}
+              />
+            </Form.Item>
+          </Col>
+          <Col span={6}>
+            <Form.Item label="Actions">
+              <Button
+                loading={isTriggering}
+                type="primary"
+                onClick={handleSubmit}
+                disabled={!selectedProject || !selectedPipelines.length}>
+                Trigger selected pipelines
+              </Button>
+            </Form.Item>
+          </Col>
+        </Row>
+      </Form>
+      <Row gutter={12}>
+        <Col span={selectedPipelines.length > 0 ? 12 : 24}>
+          <Table
+            virtual={true}
+            scroll={{
+              y: height,
+            }}
+            rowKey="id"
+            dataSource={filteredPipelines}
+            pagination={false}
+            columns={[
+              {
+                title: firstColumnTitle,
+                dataIndex: 'id',
+                width: 80,
+                className: 'text-center align-center',
+                key: 'id',
+                render: (id: number) => (
+                  <Checkbox
+                    checked={selectedPipelines.includes(id)}
+                    onChange={(e) => {
+                      setSelectedPipelines(
+                        e.target.checked
+                          ? [id, ...selectedPipelines]
+                          : selectedPipelines.filter((i) => i !== id),
+                      );
+                    }}
+                  />
+                ),
+              },
+              {
+                title: 'Name',
+                dataIndex: 'name',
+                key: 'name',
+              },
+              {
+                title: 'Folder',
+                dataIndex: 'folder',
+                key: 'folder',
+              },
+              {
+                title: 'Description',
+                dataIndex: 'description',
+                key: 'description',
+              },
+            ]}
+          />
+        </Col>
+        {selectedPipelines.length > 0 && (
+          <Col span={12}>
+            <Table
+              virtual={true}
+              scroll={{
+                y: height,
+              }}
+              rowKey="id"
+              dataSource={pipelines.filter((pipeline) =>
+                selectedPipelines.includes(pipeline.id),
+              )}
+              pagination={false}
+              columns={[
+                {
+                  title: 'ID',
+                  dataIndex: 'id',
+                  width: 80,
+                  className: 'text-center align-center',
+                  key: 'id',
+                },
+                {
+                  title: 'Name',
+                  dataIndex: 'name',
+                  key: 'name',
+                },
+                {
+                  title: 'Folder',
+                  dataIndex: 'folder',
+                  key: 'folder',
+                },
+                {
+                  title: 'Description',
+                  dataIndex: 'description',
+                  key: 'description',
+                },
+              ]}
+            />
+          </Col>
+        )}
+      </Row>
+    </>
   );
 };
 
